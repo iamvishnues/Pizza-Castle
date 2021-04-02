@@ -1,19 +1,26 @@
+import 'package:firebase_core/firebase_core.dart';
 import "package:flutter/material.dart";
+import 'package:pizzacastle/Helpers/Headers.dart';
+import 'package:pizzacastle/Views/SplashScreen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  return runApp(MaterialApp(
-    home: MyApp(),
-  ));
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
+  return runApp(
+    MyApp(),
+  );
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return MultiProvider(
+      providers: [ChangeNotifierProvider.value(value: Headers())],
+      child: MaterialApp(
+        theme: ThemeData(primarySwatch: Colors.red),
+        home: SplashScreen(),
+      ),
+    );
   }
 }
