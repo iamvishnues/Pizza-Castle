@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "485002087437",
+    "project_id": "pizzacastle-78fdb",
+    "storage_bucket": "pizzacastle-78fdb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:485002087437:android:ae9ae3798c78a8ddda9944",
+        "android_client_info": {
+          "package_name": "com.esvisoftech.pizzacastle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "485002087437-juntgubddivmgakqujkpijnm74c9hjbh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwDomSlgVYj3QEibvPI4JktXQbFBAOAOM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "485002087437-juntgubddivmgakqujkpijnm74c9hjbh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
