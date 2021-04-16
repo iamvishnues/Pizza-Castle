@@ -23,7 +23,8 @@ class _HomePageState extends State<HomePage> {
               Headers().headerText(),
               Headers().headerMenu(context),
               MiddleHelpers().textFav(),
-              MiddleHelpers().dataFav(context, "favourite")
+              MiddleHelpers().dataFav(context, "favourite"),
+              MiddleHelpers().dataBusiness(context, "business")
             ],
           ),
         ),
