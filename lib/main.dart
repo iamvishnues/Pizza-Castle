@@ -4,6 +4,7 @@ import 'package:pizzacastle/Helpers/Headers.dart';
 import 'package:pizzacastle/Helpers/Middle.dart';
 import 'package:pizzacastle/Services/ManageData.dart';
 import 'package:pizzacastle/Views/SplashScreen.dart';
+import 'package:pizzacastle/Helpers/Footer.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: Headers()),
         ChangeNotifierProvider.value(value: MiddleHelpers()),
         ChangeNotifierProvider.value(value: ManageData()),
+        ChangeNotifierProvider.value(value: Footers()),
       ],
       child: MaterialApp(
         theme: ThemeData(primarySwatch: Colors.red),

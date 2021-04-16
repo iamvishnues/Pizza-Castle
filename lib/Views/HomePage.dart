@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pizzacastle/Helpers/Footer.dart';
 import 'package:pizzacastle/Helpers/Headers.dart';
 import 'package:pizzacastle/Helpers/Middle.dart';
 
@@ -12,6 +13,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: Footers().floatingActionButton(context),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(left: 12, top: 8, bottom: 8),
@@ -24,7 +26,8 @@ class _HomePageState extends State<HomePage> {
               Headers().headerMenu(context),
               MiddleHelpers().textFav(),
               MiddleHelpers().dataFav(context, "favourite"),
-              MiddleHelpers().dataBusiness(context, "business")
+              MiddleHelpers().textBusiness(),
+              MiddleHelpers().dataBusiness(context, "business"),
             ],
           ),
         ),

@@ -1,20 +1,21 @@
 import 'dart:ui';
 
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:pizzacastle/Views/DetailScreen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:pizzacastle/Services/ManageData.dart';
 import 'package:provider/provider.dart';
 
 class MiddleHelpers extends ChangeNotifier {
   Widget textFav() {
     return Container(
-      margin: EdgeInsets.only(left: 10),
+      margin: EdgeInsets.only(left: 10, bottom: 10),
       child: RichText(
           text: TextSpan(
               text: "Favourite ",
@@ -39,8 +40,11 @@ class MiddleHelpers extends ChangeNotifier {
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
-                  child: Lottie.asset("Assets/Animations/loading.json"),
-                );
+                    child: Center(
+                  child: SizedBox(
+                      width: 150,
+                      child: Lottie.asset("Assets/Animations/loading.json")),
+                ));
               }
               // print(
               //     "<<<<<<<<<<<<<<<<<<<<<<<<<<>.....................................");
@@ -51,7 +55,16 @@ class MiddleHelpers extends ChangeNotifier {
                   itemCount: snapshot.data.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          PageTransition(
+                              child: DetailScreen(
+                                queryDocumentSnapshot: snapshot.data[index],
+                              ),
+                              type: PageTransitionType.bottomToTop),
+                        );
+                      },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
@@ -64,6 +77,7 @@ class MiddleHelpers extends ChangeNotifier {
                               boxShadow: [
                                 BoxShadow(
                                     color: Colors.grey.shade300,
+                                    blurRadius: 2,
                                     spreadRadius: 3)
                               ]),
                           child: Column(
@@ -144,6 +158,7 @@ class MiddleHelpers extends ChangeNotifier {
                                         Text(
                                           snapshot.data[index].data()["price"],
                                           style: TextStyle(
+                                              fontSize: 15,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ],
@@ -160,6 +175,25 @@ class MiddleHelpers extends ChangeNotifier {
             }));
   }
 
+  Widget textBusiness() {
+    return Container(
+      height: 50,
+      margin: EdgeInsets.only(left: 10, top: 20),
+      child: RichText(
+          text: TextSpan(
+              text: "Business ",
+              style: TextStyle(
+                  fontSize: 30,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600),
+              children: <TextSpan>[
+            TextSpan(
+                text: "Lunch",
+                style: TextStyle(fontSize: 22, color: Colors.black54))
+          ])),
+    );
+  }
+
   Widget dataBusiness(BuildContext context, String collection) {
     return Container(
       height: 400,
@@ -168,14 +202,20 @@ class MiddleHelpers extends ChangeNotifier {
             .fetchData(collection),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Lottie.asset("Assets/Animations/loading.json");
+            return Center(
+              child: SizedBox(
+                  width: 150,
+                  child: Lottie.asset("Assets/Animations/loading.json")),
+            );
           } else {
             return ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, index) {
                   return Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.only(
+                        bottom: 18.0, left: 8.0, right: 8.0),
                     child: Container(
+                      width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                           boxShadow: [
                             BoxShadow(
@@ -205,6 +245,7 @@ class MiddleHelpers extends ChangeNotifier {
                                 ),
                                 Text(snapshot.data[index].data()["category"],
                                     style: TextStyle(
+                                        fontWeight: FontWeight.w800,
                                         color: Colors.indigo.shade800)),
                                 SizedBox(
                                   height: 40,
@@ -236,7 +277,7 @@ class MiddleHelpers extends ChangeNotifier {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(
-                                left: 10, right: 2, top: 5, bottom: 5),
+                                left: 5, right: 2, top: 5, bottom: 5),
                             child: SizedBox(
                               height: 150,
                               child: Image.network(

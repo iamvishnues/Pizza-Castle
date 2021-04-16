@@ -12,14 +12,27 @@ class Headers extends ChangeNotifier {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Icon(FontAwesomeIcons.userAlt),
+            IconButton(
+              icon: Icon(FontAwesomeIcons.hamburger),
+              onPressed: () {},
+            ),
+            SizedBox(
+              width: 20,
+            ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Icon(FontAwesomeIcons.locationArrow),
+                SizedBox(
+                  width: 10,
+                ),
                 Text("Nehrunagara")
               ],
+            ),
+            SizedBox(
+              width: 30,
             ),
             IconButton(icon: Icon(FontAwesomeIcons.search), onPressed: () {}),
             SizedBox(
@@ -103,7 +116,7 @@ class Headers extends ChangeNotifier {
           height: 40,
           width: 90,
           child: Center(
-            child: Text("pasta"),
+            child: Text("Pasta"),
           ),
         ))
       ],
