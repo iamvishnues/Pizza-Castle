@@ -6,10 +6,14 @@ import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pizzacastle/Views/HomePage.dart';
+import 'package:pizzacastle/Views/MyCart.dart';
 
 class DetailScreen extends StatefulWidget {
   final QueryDocumentSnapshot queryDocumentSnapshot;
-  const DetailScreen({Key key, this.queryDocumentSnapshot}) : super(key: key);
+  final int indexx;
+
+  const DetailScreen({Key key, this.queryDocumentSnapshot, this.indexx})
+      : super(key: key);
 
   @override
   _DetailScreenState createState() => _DetailScreenState();
@@ -74,7 +78,9 @@ class _DetailScreenState extends State<DetailScreen> {
       child: SizedBox(
         height: 280.0,
         child: Container(
-          child: Image.network(widget.queryDocumentSnapshot["image"]),
+          child: Hero(
+              tag: "tag$widget.indexx",
+              child: Image.network(widget.queryDocumentSnapshot["image"])),
           decoration: BoxDecoration(shape: BoxShape.circle),
         ),
       ),
@@ -347,7 +353,12 @@ class _DetailScreenState extends State<DetailScreen> {
         Stack(
           children: [
             FloatingActionButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    PageTransition(
+                        child: MyCart(), type: PageTransitionType.bottomToTop));
+              },
               child: Icon(EvaIcons.shoppingCart),
             ),
             Positioned(

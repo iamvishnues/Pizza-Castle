@@ -60,6 +60,7 @@ class MiddleHelpers extends ChangeNotifier {
                           context,
                           PageTransition(
                               child: DetailScreen(
+                                indexx: index,
                                 queryDocumentSnapshot: snapshot.data[index],
                               ),
                               type: PageTransitionType.bottomToTop),
@@ -89,8 +90,11 @@ class MiddleHelpers extends ChangeNotifier {
                                   SizedBox(
                                     height: 180,
                                     width: 220,
-                                    child: Image.network(
-                                        snapshot.data[index].data()['image']),
+                                    child: Hero(
+                                      tag: "tag$index",
+                                      child: Image.network(
+                                          snapshot.data[index].data()['image']),
+                                    ),
                                   ),
                                   Positioned(
                                     left: 170,
