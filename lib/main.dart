@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 import 'package:pizzacastle/Helpers/Headers.dart';
 import 'package:pizzacastle/Helpers/Middle.dart';
 import 'package:pizzacastle/Services/ManageData.dart';
+import 'package:pizzacastle/Services/Maps.dart';
 import 'package:pizzacastle/Views/SplashScreen.dart';
 import 'package:pizzacastle/Helpers/Footer.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: MiddleHelpers()),
         ChangeNotifierProvider.value(value: ManageData()),
         ChangeNotifierProvider.value(value: Footers()),
+        ChangeNotifierProvider.value(value: GenerateMaps()),
       ],
       child: MaterialApp(
         theme: ThemeData(primarySwatch: Colors.red),

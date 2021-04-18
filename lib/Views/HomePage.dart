@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:pizzacastle/Helpers/Footer.dart';
 import 'package:pizzacastle/Helpers/Headers.dart';
 import 'package:pizzacastle/Helpers/Middle.dart';
+import 'package:pizzacastle/Services/Maps.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -10,6 +12,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    Provider.of<GenerateMaps>(context, listen: false).getCurrentLocation();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

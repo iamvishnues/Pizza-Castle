@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pizzacastle/Services/Maps.dart';
 
 class Headers extends ChangeNotifier {
   Widget appBar(BuildContext context) {
@@ -28,7 +29,13 @@ class Headers extends ChangeNotifier {
                 SizedBox(
                   width: 10,
                 ),
-                Text("Nehrunagara")
+                Container(
+                    constraints: BoxConstraints(maxWidth: 150, maxHeight: 50),
+                    child: Text(
+                      finalAddress,
+                      overflow: TextOverflow.fade,
+                      style: TextStyle(fontSize: 11),
+                    ))
               ],
             ),
             SizedBox(
