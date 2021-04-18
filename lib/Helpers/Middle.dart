@@ -238,7 +238,8 @@ class MiddleHelpers extends ChangeNotifier {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(bottom: 5),
+                                  padding:
+                                      const EdgeInsets.only(bottom: 5, top: 5),
                                   child: Text(
                                     snapshot.data[index].data()["name"],
                                     style: TextStyle(
@@ -275,6 +276,9 @@ class MiddleHelpers extends ChangeNotifier {
                                             fontSize: 16,
                                             fontWeight: FontWeight.w700)),
                                   ],
+                                ),
+                                SizedBox(
+                                  height: 5,
                                 ),
                               ],
                             ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:pizzacastle/Views/Login.dart';
 
 import 'HomePage.dart';
 
@@ -20,8 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
         () => Navigator.pushReplacement(
             context,
             PageTransition(
-                child: HomePage(),
-                type: PageTransitionType.leftToRightWithFade)));
+                child: Login(), type: PageTransitionType.leftToRightWithFade)));
     super.initState();
   }
 
