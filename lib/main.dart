@@ -6,7 +6,7 @@ import 'package:pizzacastle/Helpers/Middle.dart';
 import 'package:pizzacastle/Providers/Authentication.dart';
 import 'package:pizzacastle/Providers/Calculations.dart';
 import 'package:pizzacastle/Services/ManageData.dart';
-import 'package:pizzacastle/Services/Maps.dart';
+import 'package:pizzacastle/Services/ManageMaps.dart';
 import 'package:pizzacastle/Views/DetailScreen.dart';
 import 'package:pizzacastle/Views/SplashScreen.dart';
 import 'package:pizzacastle/Helpers/Footer.dart';

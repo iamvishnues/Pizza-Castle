@@ -1,11 +1,10 @@
 import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:pizzacastle/Services/Maps.dart';
+import 'package:pizzacastle/Services/ManageMaps.dart';
 
 class Headers extends ChangeNotifier {
   Widget appBar(BuildContext context) {
