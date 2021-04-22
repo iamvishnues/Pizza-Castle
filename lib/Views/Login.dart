@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pizzacastle/Providers/Authentication.dart';
 import 'package:pizzacastle/Views/HomePage.dart';
@@ -13,56 +14,88 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: SingleChildScrollView(
         child: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: Colors.white,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              RichText(
-                text: TextSpan(
-                    text: "Piz",
-                    style: GoogleFonts.poppins(
-                        color: Colors.black87,
-                        fontSize: 27,
-                        fontWeight: FontWeight.w600),
-                    children: [
-                      TextSpan(text: "za", style: TextStyle(color: Colors.red)),
-                      TextSpan(text: " "),
-                      TextSpan(
-                          text: "Cast",
-                          style: TextStyle(color: Colors.black87)),
-                      TextSpan(text: "le", style: TextStyle(color: Colors.red)),
-                    ]),
-              ),
-              SizedBox(
-                height: 50,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  MaterialButton(
-                    color: Color(0xffffb770),
-                    onPressed: () {
-                      loginsheet(context);
-                    },
-                    child: Text("Login"),
-                  ),
-                  MaterialButton(
-                    color: Color(0xffffb770),
-                    onPressed: () {
-                      signupsheet(context);
-                    },
-                    child: Text("Signup"),
-                  )
-                ],
-              )
-            ],
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                    height: 200,
+                    child: Lottie.asset("Assets/Animations/pizza-slice.json")),
+                RichText(
+                  text: TextSpan(
+                      text: "Piz",
+                      style: GoogleFonts.poppins(
+                          color: Colors.black87,
+                          fontSize: 30,
+                          fontWeight: FontWeight.w600),
+                      children: [
+                        TextSpan(
+                            text: "za", style: TextStyle(color: Colors.red)),
+                        TextSpan(text: " "),
+                        TextSpan(
+                            text: "Cast",
+                            style: TextStyle(color: Colors.black87)),
+                        TextSpan(
+                            text: "le", style: TextStyle(color: Colors.red)),
+                      ]),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      Provider.of<Authentication>(context, listen: true)
+                          .getErrorMessage,
+                      style: TextStyle(fontSize: 22, color: Colors.redAccent),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
+                      width: 250,
+                      height: 50,
+                      child: MaterialButton(
+                        color: Color(0xffffb770),
+                        onPressed: () {
+                          loginsheet(context);
+                        },
+                        child: Text(
+                          "Login",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                      width: 250,
+                      height: 50,
+                      child: MaterialButton(
+                        color: Color(0xffffb770),
+                        onPressed: () {
+                          signupsheet(context);
+                        },
+                        child: Text(
+                          "Signup",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -107,24 +140,46 @@ class Login extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 30,
                     ),
-                    MaterialButton(
-                      color: Color(0xffffb770),
-                      onPressed: () {
-                        Provider.of<Authentication>(context, listen: false)
-                            .loginIntoAccount(
-                                emailcontroller.text, passwordcontroller.text)
-                            .whenComplete(() {
-                          return Navigator.pushReplacement(
-                              context,
-                              PageTransition(
-                                  child: HomePage(),
-                                  type: PageTransitionType.bottomToTop));
-                        });
-                      },
-                      child: Text("Login"),
-                    )
+                    SizedBox(
+                      width: 380,
+                      height: 50,
+                      child: MaterialButton(
+                        color: Color(0xffffb770),
+                        onPressed: () {
+                          Provider.of<Authentication>(context, listen: false)
+                              .loginIntoAccount(
+                                  emailcontroller.text, passwordcontroller.text)
+                              .whenComplete(() {
+                            if (Provider.of<Authentication>(context,
+                                        listen: false)
+                                    .getErrorMessage ==
+                                "") {
+                              return Navigator.pushReplacement(
+                                  context,
+                                  PageTransition(
+                                      child: HomePage(),
+                                      type: PageTransitionType.bottomToTop));
+                            }
+                            if (Provider.of<Authentication>(context,
+                                        listen: false)
+                                    .getErrorMessage !=
+                                "") {
+                              Navigator.pushReplacement(
+                                  context,
+                                  PageTransition(
+                                      child: Login(),
+                                      type: PageTransitionType.fade));
+                            }
+                          });
+                        },
+                        child: Text(
+                          "Login",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -171,23 +226,45 @@ class Login extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 30,
                     ),
-                    MaterialButton(
-                      color: Color(0xffffb770),
-                      onPressed: () {
-                        Provider.of<Authentication>(context, listen: false)
-                            .createNewAccount(
-                                emailcontroller.text, passwordcontroller.text)
-                            .whenComplete(() {
-                          return Navigator.pushReplacement(
-                              context,
-                              PageTransition(
-                                  child: HomePage(),
-                                  type: PageTransitionType.bottomToTop));
-                        });
-                      },
-                      child: Text("Signup"),
+                    SizedBox(
+                      width: 380,
+                      height: 50,
+                      child: MaterialButton(
+                        color: Color(0xffffb770),
+                        onPressed: () {
+                          Provider.of<Authentication>(context, listen: false)
+                              .createNewAccount(
+                                  emailcontroller.text, passwordcontroller.text)
+                              .whenComplete(() {
+                            if (Provider.of<Authentication>(context,
+                                        listen: false)
+                                    .getErrorMessage ==
+                                "") {
+                              return Navigator.pushReplacement(
+                                  context,
+                                  PageTransition(
+                                      child: HomePage(),
+                                      type: PageTransitionType.bottomToTop));
+                            }
+                            if (Provider.of<Authentication>(context,
+                                        listen: false)
+                                    .getErrorMessage !=
+                                "") {
+                              Navigator.pushReplacement(
+                                  context,
+                                  PageTransition(
+                                      child: Login(),
+                                      type: PageTransitionType.fade));
+                            }
+                          });
+                        },
+                        child: Text(
+                          "Signup",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
                     )
                   ],
                 ),

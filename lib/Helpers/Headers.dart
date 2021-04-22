@@ -1,10 +1,14 @@
 import 'dart:ui';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:pizzacastle/Services/ManageMaps.dart';
+import 'package:pizzacastle/Views/Login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Headers extends ChangeNotifier {
   Widget appBar(BuildContext context) {
@@ -14,10 +18,6 @@ class Headers extends ChangeNotifier {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            IconButton(
-              icon: Icon(FontAwesomeIcons.hamburger),
-              onPressed: () {},
-            ),
             SizedBox(
               width: 20,
             ),
@@ -43,7 +43,22 @@ class Headers extends ChangeNotifier {
             IconButton(icon: Icon(FontAwesomeIcons.search), onPressed: () {}),
             SizedBox(
               height: 30,
-            )
+            ),
+            IconButton(
+              icon: Icon(
+                EvaIcons.logOut,
+                size: 35,
+              ),
+              onPressed: () async {
+                SharedPreferences sharedPreference =
+                    await SharedPreferences.getInstance();
+                sharedPreference.remove('uid');
+                Navigator.pushReplacement(
+                    context,
+                    PageTransition(
+                        child: Login(), type: PageTransitionType.fade));
+              },
+            ),
           ],
         ),
       ),

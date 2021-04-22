@@ -13,7 +13,7 @@
         android:label="pizzacastle"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBglMYRW7TrcXCuv0uWXEcS7Meq3ZCpCmk"/>
+            android:value="AIzaSyByH_rZFBh9IE2DMW1QUTJk7l2K294Ev9I"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
