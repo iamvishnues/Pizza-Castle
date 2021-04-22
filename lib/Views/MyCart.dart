@@ -2,14 +2,17 @@ import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pizzacastle/MiniViews/Maps.dart';
+import 'package:pizzacastle/Services/ManageData.dart';
+import 'package:pizzacastle/Services/ManageMaps.dart';
 import 'package:pizzacastle/Views/HomePage.dart';
+import 'package:pizzacastle/Views/SplashScreen.dart';
+import 'package:provider/provider.dart';
 
 class MyCart extends StatefulWidget {
   @override
@@ -61,7 +64,10 @@ class _MyCartState extends State<MyCart> {
                   FontAwesomeIcons.trash,
                   size: 16,
                 ),
-                onPressed: () {})
+                onPressed: () {
+                  Provider.of<ManageData>(context, listen: false)
+                      .deleteData(context);
+                })
           ],
         ),
       ),
@@ -124,7 +130,7 @@ class _MyCartState extends State<MyCart> {
                                 Text(
                                   documentSnapshot.data()["name"],
                                   style: TextStyle(
-                                      fontSize: 24,
+                                      fontSize: 21,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
@@ -205,7 +211,11 @@ class _MyCartState extends State<MyCart> {
                         padding: const EdgeInsets.only(left: 8.0),
                         child: Container(
                             constraints: BoxConstraints(maxWidth: 250),
-                            child: Text("Nehrunagara Puttur DK")),
+                            child: Text(
+                              Provider.of<GenerateMaps>(context, listen: true)
+                                  .getmainAddress
+                                  .toString(),
+                            )),
                       )
                     ],
                   ),
@@ -347,7 +357,9 @@ class _MyCartState extends State<MyCart> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            print(userUid);
+          },
           child: Container(
             width: 250,
             height: 50,

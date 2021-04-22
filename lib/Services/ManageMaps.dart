@@ -10,7 +10,7 @@ class GenerateMaps extends ChangeNotifier {
   Position get getPosition => position;
   GoogleMapController googleMapController;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
-  String countryName, mainAddress;
+  String countryName, mainAddress = "";
   String get getcountryName => countryName;
   String get getmainAddress => mainAddress;
   Future getCurrentLocation() async {
@@ -48,7 +48,10 @@ class GenerateMaps extends ChangeNotifier {
         countryName = address.first.countryName;
         mainAddress = address.first.addressLine;
         notifyListeners();
-        markers.isNotEmpty
+        // markers.isNotEmpty
+        //     ? getMarkers(loc.latitude, loc.longitude)
+        //     : markers.clear();
+        markers == null
             ? getMarkers(loc.latitude, loc.longitude)
             : markers.clear();
         print(countryName);

@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pizzacastle/Providers/Calculations.dart';
+import 'package:pizzacastle/Services/ManageData.dart';
 import 'package:pizzacastle/Views/HomePage.dart';
 import 'package:pizzacastle/Views/MyCart.dart';
 import 'package:provider/provider.dart';
@@ -433,7 +434,9 @@ class _DetailScreenState extends State<DetailScreen> {
                 child: CircleAvatar(
                   radius: 10,
                   backgroundColor: Colors.white,
-                  child: Text("$totalItems"),
+                  child: Text(Provider.of<calculations>(context, listen: false)
+                      .getcartData
+                      .toString()),
                 ))
           ],
         )
