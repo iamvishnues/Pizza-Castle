@@ -36,7 +36,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: calculations()),
       ],
       child: MaterialApp(
-        theme: ThemeData(primarySwatch: Colors.red, fontFamily: "Poppins"),
+        theme: ThemeData(
+            canvasColor: Colors.transparent,
+            primarySwatch: Colors.red,
+            fontFamily: "Poppins"),
         home: SplashScreen(),
       ),
     );
