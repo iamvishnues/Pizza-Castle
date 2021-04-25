@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'HomePage.dart';
 
 String userUid;
+String userEmail;
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -20,6 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Future getUid() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     userUid = sharedPreferences.getString('uid');
+    userEmail = sharedPreferences.get('useremail');
     print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<" + userUid);
   }
 
@@ -40,6 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,

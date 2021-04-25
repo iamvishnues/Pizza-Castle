@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,11 +7,15 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pizzacastle/MiniViews/Maps.dart';
+import 'package:pizzacastle/Providers/API_key.dart';
+import 'package:pizzacastle/Providers/Authentication.dart';
+import 'package:pizzacastle/Providers/Payment.dart';
 import 'package:pizzacastle/Services/ManageData.dart';
 import 'package:pizzacastle/Services/ManageMaps.dart';
 import 'package:pizzacastle/Views/HomePage.dart';
 import 'package:pizzacastle/Views/SplashScreen.dart';
 import 'package:provider/provider.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class MyCart extends StatefulWidget {
   @override
@@ -20,10 +23,61 @@ class MyCart extends StatefulWidget {
 }
 
 class _MyCartState extends State<MyCart> {
+  Razorpay razorpay;
+  String total = "320";
+  @override
+  void initState() {
+    razorpay = Razorpay();
+    razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
+        Provider.of<PaymentHelper>(context, listen: false).handlePaymentSucess);
+    razorpay.on(Razorpay.EVENT_PAYMENT_ERROR,
+        Provider.of<PaymentHelper>(context, listen: false).handlePaymentError);
+    razorpay.on(
+        Razorpay.EVENT_EXTERNAL_WALLET,
+        Provider.of<PaymentHelper>(context, listen: false)
+            .handleExternalWallet);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    razorpay.clear();
+    super.dispose();
+  }
+
+  Future checkMeOut() async {
+    var options = {
+      "key": API_Key,
+      "amount": total,
+      "name": Provider.of<Authentication>(context, listen: false)
+                  .getUserEmail ==
+              null
+          ? userEmail
+          : Provider.of<Authentication>(context, listen: false).getUserEmail,
+      "description": "Payment",
+      "prefill": {
+        "contact": "9864532890",
+        "email": Provider.of<Authentication>(context, listen: false)
+                    .getUserEmail ==
+                null
+            ? userEmail
+            : Provider.of<Authentication>(context, listen: false).getUserEmail,
+      },
+      "external": {
+        "wallet": ["paytm"]
+      },
+    };
+    try {
+      razorpay.open(options);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: floatingActionButton(),
+      // floatingActionButton: floatingActionButton(),
       body: Padding(
         padding: const EdgeInsets.only(left: 10.0),
         child: SingleChildScrollView(
@@ -34,8 +88,16 @@ class _MyCartState extends State<MyCart> {
               appBar(context),
               headerText(),
               cartData(),
-              shippingDetails(context),
-              billingData()
+              Container(
+                height: 300,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage(
+                  "Assets/Images/space.png",
+                ))),
+              )
+              // shippingDetails(context),
+              // billingData()
             ],
           ),
         ),
@@ -62,7 +124,7 @@ class _MyCartState extends State<MyCart> {
             IconButton(
                 icon: Icon(
                   FontAwesomeIcons.trash,
-                  size: 16,
+                  size: 22,
                 ),
                 onPressed: () {
                   Provider.of<ManageData>(context, listen: false)
@@ -82,7 +144,7 @@ class _MyCartState extends State<MyCart> {
           Text("My",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
           Text("Cart",
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold))
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold))
         ],
       ),
     );
@@ -90,7 +152,7 @@ class _MyCartState extends State<MyCart> {
 
   Widget cartData() {
     return SizedBox(
-        height: 280,
+        height: MediaQuery.of(context).size.height - 280,
         child: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance.collection("myorders").snapshots(),
           builder: (context, snapshot) {
@@ -103,74 +165,81 @@ class _MyCartState extends State<MyCart> {
                     snapshot.data.docs.map((DocumentSnapshot documentSnapshot) {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.grey.shade300,
-                                blurRadius: 2,
-                                spreadRadius: 3)
-                          ]),
-                      height: 220,
-                      width: 400,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              child: Image.network(
-                                  documentSnapshot.data()["image"]),
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  documentSnapshot.data()["name"],
-                                  style: TextStyle(
-                                      fontSize: 21,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  "Price ${documentSnapshot.data()['price']}",
-                                  style: TextStyle(
-                                    fontSize: 18,
+                    child: GestureDetector(
+                      onLongPress: () {
+                        PlaceOrder(context, documentSnapshot);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.grey.shade300,
+                                  blurRadius: 2,
+                                  spreadRadius: 3)
+                            ]),
+                        height: 220,
+                        width: 400,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width / 2.2,
+                                child: Image.network(
+                                    documentSnapshot.data()["image"]),
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    documentSnapshot.data()["name"],
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontSize: 21,
+                                        fontWeight: FontWeight.bold),
                                   ),
-                                ),
-                                Text(
-                                  "Cheese: ${documentSnapshot.data()['cheese']}",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                  ),
-                                ),
-                                Text(
-                                  "Onion: ${documentSnapshot.data()['onion']}",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                  ),
-                                ),
-                                Text(
-                                  "Oliver: ${documentSnapshot.data()['oliver']}",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: CircleAvatar(
-                                    child: Text(
-                                      "${documentSnapshot.data()['size']}",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
+                                  Text(
+                                    "Price ${documentSnapshot.data()['price']}",
+                                    style: TextStyle(
+                                      fontSize: 18,
                                     ),
                                   ),
-                                ),
-                              ],
-                            )
-                          ],
+                                  Text(
+                                    "Cheese: ${documentSnapshot.data()['cheese']}",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  Text(
+                                    "Onion: ${documentSnapshot.data()['onion']}",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  Text(
+                                    "Oliver: ${documentSnapshot.data()['oliver']}",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: CircleAvatar(
+                                      child: Text(
+                                        "${documentSnapshot.data()['size']}",
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -379,5 +448,116 @@ class _MyCartState extends State<MyCart> {
         ),
       ],
     );
+  }
+
+  PlaceOrder(BuildContext context, DocumentSnapshot documentSnapshot) {
+    return showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+            child: Column(
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 160, vertical: 2),
+                  child: Divider(
+                    thickness: 4,
+                    color: Colors.grey.shade500,
+                  ),
+                ),
+                SizedBox(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                            height: 30,
+                            child: Text(
+                              "Time: ${Provider.of<PaymentHelper>(context, listen: true).deliveryTiming.format(context)}",
+                              style: TextStyle(fontSize: 18),
+                            )),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                            height: 80,
+                            child: Text(
+                              "Location: ${Provider.of<GenerateMaps>(context, listen: true).getmainAddress}",
+                              style: TextStyle(fontSize: 18),
+                            )),
+                      )
+                    ],
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    FloatingActionButton(
+                        child: Icon(FontAwesomeIcons.clock),
+                        onPressed: () {
+                          Provider.of<PaymentHelper>(context, listen: false)
+                              .selectTime(context);
+                        }),
+                    FloatingActionButton(
+                        child: Icon(Icons.location_on),
+                        onPressed: () {
+                          Provider.of<PaymentHelper>(context, listen: false)
+                              .selectLocation(context);
+                        }),
+                    FloatingActionButton(
+                        child: Icon(FontAwesomeIcons.rupeeSign),
+                        onPressed: () async {
+                          await checkMeOut().whenComplete(() {
+                            Provider.of<PaymentHelper>(context, listen: false)
+                                .showCheckoutButtonMethod();
+                          });
+                        }),
+                  ],
+                ),
+                SizedBox(
+                  height: 150,
+                ),
+                Provider.of<PaymentHelper>(context, listen: false)
+                        .showCheckoutButton
+                    ? MaterialButton(
+                        color: Colors.redAccent,
+                        child: Text("Place order",
+                            style: TextStyle(color: Colors.white)),
+                        onPressed: () async {
+                          await FirebaseFirestore.instance
+                              .collection("adminCollections")
+                              .add({
+                            "username": Provider.of<Authentication>(context,
+                                            listen: false)
+                                        .getUserEmail ==
+                                    null
+                                ? userEmail
+                                : Provider.of<Authentication>(context,
+                                        listen: false)
+                                    .getUserEmail,
+                            "image": documentSnapshot.data()["image"],
+                            "pizza": documentSnapshot.data()["name"],
+                            "price": documentSnapshot.data()["price"],
+                            "time": Provider.of<PaymentHelper>(context,
+                                    listen: false)
+                                .deliveryTiming
+                                .format(context),
+                            "location": Provider.of<GenerateMaps>(context,
+                                    listen: false)
+                                .getmainAddress,
+                            "size": documentSnapshot.data()["size"],
+                            "onion": documentSnapshot.data()["onion"],
+                            "cheese": documentSnapshot.data()["cheese"],
+                            "oliver": documentSnapshot.data()["oliver"],
+                          });
+                        },
+                      )
+                    : Container()
+              ],
+            ),
+          );
+        });
   }
 }

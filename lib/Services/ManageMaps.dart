@@ -64,8 +64,8 @@ class GenerateMaps extends ChangeNotifier {
         notifyListeners();
       },
       initialCameraPosition: CameraPosition(
-        target: LatLng(21.000, 45.000),
-        zoom: 18.0,
+        target: LatLng(12.972442, 77.580643),
+        zoom: 14.0,
       ),
     );
     // });

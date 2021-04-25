@@ -8,6 +8,7 @@
 .buildlog/
 .history
 .svn/
+lib/Providers/API_key.dart
 
 # IntelliJ related
 *.iml

@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Authentication extends ChangeNotifier {
-  String uid;
+  String uid, userEmail;
   String get getUid => uid;
+  String get getUserEmail => userEmail;
   dynamic errorMessage = "";
   String get getErrorMessage => errorMessage;
 
@@ -19,7 +20,9 @@ class Authentication extends ChangeNotifier {
           .signInWithEmailAndPassword(email: email, password: password);
       User user = userCredential.user;
       uid = user.uid;
+      userEmail = user.email;
       sharedPreferences.setString('uid', uid);
+      sharedPreferences.setString("useremail", userEmail);
       print("This is UID $getUid");
       errorMessage = "";
       notifyListeners();

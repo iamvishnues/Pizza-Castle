@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 class MiddleHelpers extends ChangeNotifier {
   Widget textFav() {
     return Container(
-      margin: EdgeInsets.only(left: 10, bottom: 10),
+      margin: EdgeInsets.only(left: 20, bottom: 10),
       child: RichText(
           text: TextSpan(
               text: "Favourite ",
@@ -67,7 +67,8 @@ class MiddleHelpers extends ChangeNotifier {
                         );
                       },
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.only(
+                            left: 20, right: 8, top: 8, bottom: 8),
                         child: Container(
                           height: 300,
                           width: 220,
@@ -182,7 +183,7 @@ class MiddleHelpers extends ChangeNotifier {
   Widget textBusiness() {
     return Container(
       height: 50,
-      margin: EdgeInsets.only(left: 10, top: 20),
+      margin: EdgeInsets.only(left: 20, top: 20),
       child: RichText(
           text: TextSpan(
               text: "Business ",
@@ -217,7 +218,7 @@ class MiddleHelpers extends ChangeNotifier {
                 itemBuilder: (BuildContext context, index) {
                   return Padding(
                     padding: const EdgeInsets.only(
-                        bottom: 18.0, left: 8.0, right: 8.0),
+                        left: 20, right: 20, top: 8, bottom: 8),
                     child: Container(
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(

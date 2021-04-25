@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pizzacastle/Services/ManageMaps.dart';
 import 'package:pizzacastle/Views/MyCart.dart';
@@ -21,7 +22,7 @@ class _MapsState extends State<Maps> {
               children: [
                 Provider.of<GenerateMaps>(context, listen: false).fetchMaps(),
                 Positioned(
-                  top: 30,
+                  top: 50,
                   left: 10,
                   child: CircleAvatar(
                     backgroundColor: Colors.white54,
@@ -52,7 +53,8 @@ class _MapsState extends State<Maps> {
                 Provider.of<GenerateMaps>(context, listen: true)
                     .getmainAddress
                     .toString(),
-                style: TextStyle(fontSize: 18),
+                overflow: TextOverflow.fade,
+                style: TextStyle(fontSize: 14),
               ),
             ),
           ),

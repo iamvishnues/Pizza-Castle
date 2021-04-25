@@ -5,6 +5,7 @@ import 'package:pizzacastle/Helpers/Headers.dart';
 import 'package:pizzacastle/Helpers/Middle.dart';
 import 'package:pizzacastle/Providers/Authentication.dart';
 import 'package:pizzacastle/Providers/Calculations.dart';
+import 'package:pizzacastle/Providers/Payment.dart';
 import 'package:pizzacastle/Services/ManageData.dart';
 import 'package:pizzacastle/Services/ManageMaps.dart';
 import 'package:pizzacastle/Views/DetailScreen.dart';
@@ -34,10 +35,13 @@ class MyApp extends StatelessWidget {
           value: Authentication(),
         ),
         ChangeNotifierProvider.value(value: calculations()),
+        ChangeNotifierProvider.value(
+          value: PaymentHelper(),
+        ),
       ],
       child: MaterialApp(
         theme: ThemeData(
-            canvasColor: Colors.transparent,
+            // canvasColor: Colors.transparent,
             primarySwatch: Colors.red,
             fontFamily: "Poppins"),
         home: SplashScreen(),
