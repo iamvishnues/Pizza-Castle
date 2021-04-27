@@ -452,110 +452,122 @@ class _MyCartState extends State<MyCart> {
 
   PlaceOrder(BuildContext context, DocumentSnapshot documentSnapshot) {
     return showModalBottomSheet(
+        // isScrollControlled: true,
         context: context,
         builder: (context) {
-          return Container(
-            child: Column(
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 160, vertical: 2),
-                  child: Divider(
-                    thickness: 4,
-                    color: Colors.grey.shade500,
+          return SingleChildScrollView(
+            child: Container(
+              height: 400,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 160, vertical: 2),
+                    child: Divider(
+                      thickness: 4,
+                      color: Colors.grey.shade500,
+                    ),
                   ),
-                ),
-                SizedBox(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  SizedBox(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                              height: 30,
+                              child: Text(
+                                "Time: ${Provider.of<PaymentHelper>(context, listen: true).deliveryTiming.format(context)}",
+                                style: TextStyle(fontSize: 18),
+                              )),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                              height: 80,
+                              child: Text(
+                                "Location: ${Provider.of<GenerateMaps>(context, listen: true).getmainAddress}",
+                                style: TextStyle(fontSize: 18),
+                              )),
+                        )
+                      ],
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                            height: 30,
-                            child: Text(
-                              "Time: ${Provider.of<PaymentHelper>(context, listen: true).deliveryTiming.format(context)}",
-                              style: TextStyle(fontSize: 18),
-                            )),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                            height: 80,
-                            child: Text(
-                              "Location: ${Provider.of<GenerateMaps>(context, listen: true).getmainAddress}",
-                              style: TextStyle(fontSize: 18),
-                            )),
-                      )
+                      FloatingActionButton(
+                          child: Icon(FontAwesomeIcons.clock),
+                          onPressed: () {
+                            Provider.of<PaymentHelper>(context, listen: false)
+                                .selectTime(context);
+                          }),
+                      FloatingActionButton(
+                          child: Icon(Icons.location_on),
+                          onPressed: () {
+                            Provider.of<PaymentHelper>(context, listen: false)
+                                .selectLocation(context);
+                          }),
+                      FloatingActionButton(
+                          child: Icon(FontAwesomeIcons.rupeeSign),
+                          onPressed: () async {
+                            await checkMeOut().whenComplete(() {
+                              Provider.of<PaymentHelper>(context, listen: false)
+                                  .showCheckoutButtonMethod();
+                            });
+                          }),
                     ],
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    FloatingActionButton(
-                        child: Icon(FontAwesomeIcons.clock),
-                        onPressed: () {
-                          Provider.of<PaymentHelper>(context, listen: false)
-                              .selectTime(context);
-                        }),
-                    FloatingActionButton(
-                        child: Icon(Icons.location_on),
-                        onPressed: () {
-                          Provider.of<PaymentHelper>(context, listen: false)
-                              .selectLocation(context);
-                        }),
-                    FloatingActionButton(
-                        child: Icon(FontAwesomeIcons.rupeeSign),
-                        onPressed: () async {
-                          await checkMeOut().whenComplete(() {
-                            Provider.of<PaymentHelper>(context, listen: false)
-                                .showCheckoutButtonMethod();
-                          });
-                        }),
-                  ],
-                ),
-                SizedBox(
-                  height: 150,
-                ),
-                Provider.of<PaymentHelper>(context, listen: false)
-                        .showCheckoutButton
-                    ? MaterialButton(
-                        color: Colors.redAccent,
-                        child: Text("Place order",
-                            style: TextStyle(color: Colors.white)),
-                        onPressed: () async {
-                          await FirebaseFirestore.instance
-                              .collection("adminCollections")
-                              .add({
-                            "username": Provider.of<Authentication>(context,
-                                            listen: false)
-                                        .getUserEmail ==
-                                    null
-                                ? userEmail
-                                : Provider.of<Authentication>(context,
+                  SizedBox(
+                    height: 80,
+                  ),
+                  Provider.of<PaymentHelper>(context, listen: false)
+                          .showCheckoutButton
+                      ? MaterialButton(
+                          color: Colors.redAccent,
+                          child: Text("Place order",
+                              style: TextStyle(color: Colors.white)),
+                          onPressed: () async {
+                            await FirebaseFirestore.instance
+                                .collection("adminCollections")
+                                .add({
+                              "username": Provider.of<Authentication>(context,
+                                              listen: false)
+                                          .getUserEmail ==
+                                      null
+                                  ? userEmail
+                                  : Provider.of<Authentication>(context,
+                                          listen: false)
+                                      .getUserEmail,
+                              "image": documentSnapshot.data()["image"],
+                              "pizza": documentSnapshot.data()["name"],
+                              "price": documentSnapshot.data()["price"],
+                              "time": Provider.of<PaymentHelper>(context,
+                                      listen: false)
+                                  .deliveryTiming
+                                  .format(context),
+                              "location": Provider.of<GenerateMaps>(context,
+                                      listen: false)
+                                  .getmainAddress,
+                              "latlong": GeoPoint(
+                                Provider.of<GenerateMaps>(context,
                                         listen: false)
-                                    .getUserEmail,
-                            "image": documentSnapshot.data()["image"],
-                            "pizza": documentSnapshot.data()["name"],
-                            "price": documentSnapshot.data()["price"],
-                            "time": Provider.of<PaymentHelper>(context,
-                                    listen: false)
-                                .deliveryTiming
-                                .format(context),
-                            "location": Provider.of<GenerateMaps>(context,
-                                    listen: false)
-                                .getmainAddress,
-                            "size": documentSnapshot.data()["size"],
-                            "onion": documentSnapshot.data()["onion"],
-                            "cheese": documentSnapshot.data()["cheese"],
-                            "oliver": documentSnapshot.data()["oliver"],
-                          });
-                        },
-                      )
-                    : Container()
-              ],
+                                    .getlat,
+                                Provider.of<GenerateMaps>(context,
+                                        listen: false)
+                                    .getlong,
+                              ),
+                              "size": documentSnapshot.data()["size"],
+                              "onion": documentSnapshot.data()["onion"],
+                              "cheese": documentSnapshot.data()["cheese"],
+                              "oliver": documentSnapshot.data()["oliver"],
+                            });
+                          },
+                        )
+                      : Container()
+                ],
+              ),
             ),
           );
         });

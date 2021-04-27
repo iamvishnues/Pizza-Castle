@@ -1,192 +1,156 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:pizzacastle/AdminPanel/Views/AdminHomePage.dart';
 import 'package:pizzacastle/Providers/Authentication.dart';
-import 'package:pizzacastle/Views/HomePage.dart';
 import 'package:provider/provider.dart';
 
-class Login extends StatelessWidget {
+class AdminLogin extends StatelessWidget {
   final TextEditingController emailcontroller = TextEditingController();
   final TextEditingController passwordcontroller = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              color: Colors.white,
-            ),
-            child: Stack(
-              children: [
-                Container(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  // decoration: BoxDecoration(
-                  //     gradient: LinearGradient(
-                  //         begin: Alignment.topCenter,
-                  //         end: Alignment.bottomCenter,
-                  //         stops: [
-                  //       0.2,
-                  //       0.45,
-                  //       0.6,
-                  //       0.9
-                  //     ],
-                  //         colors: [
-                  //       Color(0xFF200B4B),
-                  //       Color(0xFF201F22),
-                  //       Color(0xFF1A1031),
-                  //       Color(0xFF19181F)
-                  //     ])
-                  //     ),
-                ),
-                Container(
-                  height: 320,
-                  margin: EdgeInsets.only(top: 40, left: 50, right: 20),
-                  child: Image.asset('Assets/Images/signin.png'),
-                ),
-                Positioned(
-                    top: 400,
-                    left: 10,
-                    child: Provider.of<Authentication>(context, listen: true)
-                                .getErrorMessage ==
-                            ""
-                        ? Padding(
-                            padding: const EdgeInsets.only(left: 15.0),
-                            child: Container(
-                                child: RichText(
-                              text: TextSpan(
-                                  text: "Pizz",
-                                  style: TextStyle(
-                                      color: Colors.black87,
-                                      fontSize: 40,
-                                      fontWeight: FontWeight.bold),
-                                  children: [
-                                    TextSpan(
-                                        text: "za",
-                                        style: TextStyle(color: Colors.red)),
-                                    TextSpan(text: " "),
-                                    TextSpan(
-                                        text: "Cast",
-                                        style:
-                                            TextStyle(color: Colors.black87)),
-                                    TextSpan(
-                                        text: "le\n",
-                                        style: TextStyle(color: Colors.red)),
-                                    TextSpan(
-                                      text: "At your ",
-                                      style: TextStyle(
-                                          color: Colors.blue, fontSize: 25),
-                                    ),
-                                    TextSpan(
-                                      text: "Service",
-                                      style: TextStyle(
-                                          color: Colors.redAccent,
-                                          fontSize: 27),
-                                    )
-                                  ]),
-                            )),
-                          )
-                        : Padding(
-                            padding: const EdgeInsets.only(left: 28.0),
-                            child: Text(
-                              Provider.of<Authentication>(context, listen: true)
-                                  .getErrorMessage,
-                              style: TextStyle(
-                                  fontSize: 30,
-                                  color: Colors.redAccent,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          )),
-                Positioned(
-                  top: MediaQuery.of(context).size.height - 100,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            loginsheet(context);
-                          },
-                          child: Container(
-                            width: 120,
-                            height: 40,
-                            decoration: BoxDecoration(
-                                color: Colors.blue.shade900,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                            child: Center(
-                              child: Text(
-                                "Login",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18),
+      body: Stack(
+        children: [
+          Positioned(
+              top: 80,
+              left: 10,
+              right: 10,
+              child: Image.asset("Assets/Images/admin.png")),
+          Positioned(
+              top: 350,
+              left: 10,
+              child: Provider.of<Authentication>(context, listen: true)
+                          .getErrorMessage ==
+                      ""
+                  ? Padding(
+                      padding: const EdgeInsets.only(left: 15.0),
+                      child: Container(
+                          child: RichText(
+                        text: TextSpan(
+                            text: "Pizz",
+                            style: TextStyle(
+                                color: Colors.black87,
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold),
+                            children: [
+                              TextSpan(
+                                  text: "za",
+                                  style: TextStyle(color: Colors.red)),
+                              TextSpan(text: " "),
+                              TextSpan(
+                                  text: "Cast",
+                                  style: TextStyle(color: Colors.black87)),
+                              TextSpan(
+                                  text: "le\n",
+                                  style: TextStyle(color: Colors.red)),
+                              TextSpan(
+                                text: "Admin ",
+                                style:
+                                    TextStyle(color: Colors.blue, fontSize: 25),
                               ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 50,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            signupsheet(context);
-                          },
-                          child: Container(
-                            width: 120,
-                            height: 40,
-                            decoration: BoxDecoration(
-                                color: Colors.blue.shade900,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                            child: Center(
-                              child: Text(
-                                "Signup",
+                              TextSpan(
+                                text: "Arena",
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18),
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
+                                    color: Colors.redAccent, fontSize: 27),
+                              )
+                            ]),
+                      )),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.only(left: 28.0),
+                      child: Text(
+                        Provider.of<Authentication>(context, listen: true)
+                            .getErrorMessage,
+                        style: TextStyle(
+                            fontSize: 30,
+                            color: Colors.redAccent,
+                            fontWeight: FontWeight.w700),
+                      ),
+                    )),
+          Positioned(
+            top: MediaQuery.of(context).size.height - 100,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      loginsheet(context);
+                    },
+                    child: Container(
+                      width: 120,
+                      height: 40,
+                      decoration: BoxDecoration(
+                          color: Colors.blue.shade900,
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      child: Center(
+                        child: Text(
+                          "Login",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-                Positioned(
-                    top: MediaQuery.of(context).size.height - 40,
+                  SizedBox(
+                    width: 50,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      signupsheet(context);
+                    },
                     child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "By continuing you agree to Pizza Castle's terms",
-                            style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.black38,
-                                fontWeight: FontWeight.w700),
-                          ),
-                          Text(
-                            "Services & Privacy policy",
-                            style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.black38,
-                                fontWeight: FontWeight.w700),
-                          )
-                        ],
+                      width: 120,
+                      height: 40,
+                      decoration: BoxDecoration(
+                          color: Colors.blue.shade900,
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      child: Center(
+                        child: Text(
+                          "Signup",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        ),
                       ),
-                    ))
-              ],
-            )),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+              top: MediaQuery.of(context).size.height - 40,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "By continuing you agree to Pizza Castle's terms",
+                      style: TextStyle(
+                          fontSize: 10,
+                          color: Colors.black38,
+                          fontWeight: FontWeight.w700),
+                    ),
+                    Text(
+                      "Services & Privacy policy",
+                      style: TextStyle(
+                          fontSize: 10,
+                          color: Colors.black38,
+                          fontWeight: FontWeight.w700),
+                    )
+                  ],
+                ),
+              )),
+        ],
       ),
     );
   }
@@ -253,7 +217,7 @@ class Login extends StatelessWidget {
                                 return Navigator.pushReplacement(
                                     context,
                                     PageTransition(
-                                        child: HomePage(),
+                                        child: AdminHomePage(),
                                         type: PageTransitionType.bottomToTop));
                               }
                               if (Provider.of<Authentication>(context,
@@ -263,7 +227,7 @@ class Login extends StatelessWidget {
                                 Navigator.pushReplacement(
                                     context,
                                     PageTransition(
-                                        child: Login(),
+                                        child: AdminLogin(),
                                         type: PageTransitionType.fade));
                               }
                             });
@@ -343,7 +307,7 @@ class Login extends StatelessWidget {
                                 return Navigator.pushReplacement(
                                     context,
                                     PageTransition(
-                                        child: HomePage(),
+                                        child: AdminHomePage(),
                                         type: PageTransitionType.bottomToTop));
                               }
                               if (Provider.of<Authentication>(context,
@@ -353,7 +317,7 @@ class Login extends StatelessWidget {
                                 Navigator.pushReplacement(
                                     context,
                                     PageTransition(
-                                        child: Login(),
+                                        child: AdminLogin(),
                                         type: PageTransitionType.fade));
                               }
                             });

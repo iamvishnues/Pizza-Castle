@@ -11,6 +11,9 @@ class GenerateMaps extends ChangeNotifier {
   GoogleMapController googleMapController;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   String countryName, mainAddress = "";
+  double lat, long;
+  double get getlat => lat;
+  double get getlong => long;
   String get getcountryName => countryName;
   String get getmainAddress => mainAddress;
   Future getCurrentLocation() async {
@@ -47,6 +50,7 @@ class GenerateMaps extends ChangeNotifier {
             await geoco.Geocoder.local.findAddressesFromCoordinates(cords);
         countryName = address.first.countryName;
         mainAddress = address.first.addressLine;
+
         notifyListeners();
         // markers.isNotEmpty
         //     ? getMarkers(loc.latitude, loc.longitude)
@@ -56,6 +60,10 @@ class GenerateMaps extends ChangeNotifier {
             : markers.clear();
         print(countryName);
         print(mainAddress);
+        lat = loc.latitude;
+        long = loc.longitude;
+        print(loc.latitude);
+        print(loc.longitude);
         print(loc);
       },
       markers: Set<Marker>.of(markers.values),
