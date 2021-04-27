@@ -2,11 +2,13 @@ import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pizzacastle/AdminPanel/Services/AdminDetailsHelper.dart';
+import 'package:pizzacastle/AdminPanel/Services/DeliveryOptions.dart';
 import 'package:pizzacastle/AdminPanel/Views/LoginPage.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -166,9 +168,29 @@ class _AdminHomePageState extends State<AdminHomePage> {
   }
 
   Widget floatingActionButton(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: () {},
-      child: Icon(FontAwesomeIcons.check),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        FloatingActionButton(
+          onPressed: () {
+            Provider.of<DeliveryOptions>(context, listen: false)
+                .showOrders(context, "cancelOrders");
+          },
+          backgroundColor: Colors.red,
+          child: Icon(Icons.clear),
+        ),
+        SizedBox(
+          width: 40,
+        ),
+        FloatingActionButton(
+          onPressed: () {
+            Provider.of<DeliveryOptions>(context, listen: false)
+                .showOrders(context, "deliveredOrders");
+          },
+          backgroundColor: Colors.green,
+          child: Icon(FontAwesomeIcons.check),
+        ),
+      ],
     );
   }
 }

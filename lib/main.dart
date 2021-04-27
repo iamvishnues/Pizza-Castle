@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import "package:flutter/material.dart";
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pizzacastle/AdminPanel/Services/AdminDetailsHelper.dart';
+import 'package:pizzacastle/AdminPanel/Services/DeliveryOptions.dart';
 import 'package:pizzacastle/Helpers/Headers.dart';
 import 'package:pizzacastle/Helpers/Middle.dart';
 import 'package:pizzacastle/Providers/Authentication.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
           value: PaymentHelper(),
         ),
         ChangeNotifierProvider.value(value: AdminDetailsHelper()),
+        ChangeNotifierProvider.value(value: DeliveryOptions()),
       ],
       child: MaterialApp(
         theme: ThemeData(

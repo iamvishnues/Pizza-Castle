@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:pizzacastle/AdminPanel/Services/DeliveryOptions.dart';
+import 'package:provider/provider.dart';
 
 class AdminDetailsHelper extends ChangeNotifier {
   GoogleMapController googleMapController;
@@ -207,7 +209,12 @@ class AdminDetailsHelper extends ChangeNotifier {
                       SizedBox(
                         width: 150,
                         child: TextButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            Provider.of<DeliveryOptions>(context, listen: false)
+                                .managedOrders(context, documentSnapshot,
+                                    "cancelOrders", "Pizza delivery cancelled")
+                                .whenComplete(() {});
+                          },
                           style: TextButton.styleFrom(
                               primary: Colors.white,
                               backgroundColor: Colors.redAccent,
@@ -216,13 +223,20 @@ class AdminDetailsHelper extends ChangeNotifier {
                                     BorderRadius.all(Radius.circular(8.0)),
                               )),
                           icon: Icon(FontAwesomeIcons.eye),
-                          label: Text("Skip"),
+                          label: Text("Cancel"),
                         ),
                       ),
                       SizedBox(
                         width: 150,
                         child: TextButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            Provider.of<DeliveryOptions>(context, listen: false)
+                                .managedOrders(
+                                    context,
+                                    documentSnapshot,
+                                    "deliveredOrders",
+                                    "Pizza delivery completed");
+                          },
                           style: TextButton.styleFrom(
                               primary: Colors.white,
                               backgroundColor: Colors.redAccent,
